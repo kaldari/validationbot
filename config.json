@@ -1,0 +1,18 @@
+{
+	"name": "validationbot",
+	"description": "Bot to mark texts as validated",
+	"authors": [
+		{
+			"name": "Ryan Kaldari",
+		}
+	],
+	"license": "MIT",
+	"support": {
+		"issues": "https://bugs.mediawiki.org/",
+		"irc": "irc://irc.freenode.net/mediawiki",
+		"wiki": "https://www.mediawiki.org/"
+	},
+	"require": {
+		"addwiki/mediawiki-api-base": "~2.0"
+	}
+}

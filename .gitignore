@@ -1,0 +1,11 @@
+# Composer
+/vendor
+/composer.lock
+/composer.local.json
+/composer.phar
+
+# Operating systems
+## Mac OS X
+.DS_Store
+## Windows
+Thumbs.db

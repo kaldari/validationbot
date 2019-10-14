@@ -2,19 +2,35 @@
 
 require_once("../vendor/autoload.php");
 require_once("../includes/WikisourceApi.php");
+require_once("./pages.php");
 
 $api = new WikisourceApi();
-$indexTitle = "Index:The Life of the Spider.djvu";
-$pageContents = $api->getPageContent( $indexTitle );
-if ( preg_match( "/{{index validated date\|.+\|transcluded=yes}}/", $pageContents ) ||
-	preg_match( "/{{index validated date\|.+\|transcluded=notadv}}/", $pageContents )
-) {
-	preg_match( "/\|Title=\[\[(.+)\]\]/", $pageContents, $matches );
-	if ( !empty( $matches ) ) {
-		$transcludedTitle = $matches[0];
-	} else {
-		echo "No title detected: " . $indexTitle . "\n";
+$x = 1;
+
+foreach ( $pages as $indexTitle ) {
+	$indexTitle = "Index:" . $indexTitle;
+	if ( $x < 10 ) {
+		$pageContents = $api->getPageContent( $indexTitle );
+		if ( preg_match( "/{{[iI]ndex validated date\|.+\|transcluded=yes}}/", $pageContents ) ||
+			preg_match( "/{{[iI]ndex validated date\|.+\|transcluded=notadv}}/", $pageContents )
+		) {
+			preg_match( "/\|Title=\[\[(.+)\]\]/", $pageContents, $matches );
+			if ( !empty( $matches ) ) {
+				$transcludedTitle = $matches[1];
+				if ( strpos ( $transcludedTitle, "]]" ) !== false ) {
+					echo "Malformed link: " . $indexTitle . "\n";
+				} else {
+					echo $transcludedTitle . "\n";
+				}
+			} else {
+				echo "No title detected: " . $indexTitle . "\n";
+			}
+		} else {
+			echo "Not transcluded: " . $indexTitle . "\n";
+			var_dump( $pageContents );
+			echo "\n";
+		}
 	}
-} else {
-	echo "Not transcluded: " . $indexTitle . "\n";
+	$x++;
+	sleep( 1 );
 }

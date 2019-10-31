@@ -9,17 +9,22 @@ $x = 1;
 
 foreach ( $pages as $indexTitle ) {
 	$indexTitle = "Index:" . $indexTitle;
-	if ( $x < 10 ) {
+	if ( $x < 4000 ) {
 		$pageContents = $api->getPageContent( $indexTitle );
 		if ( preg_match( "/{{[iI]ndex validated date\|.+\|transcluded=yes}}/", $pageContents ) ||
-			preg_match( "/{{[iI]ndex validated date\|.+\|transcluded=notadv}}/", $pageContents )
+			preg_match( "/{{[iI]ndex validated date\|.+\|transcluded=notadv}}/", $pageContents ) ||
+			preg_match( "/{{[iI]ndex validated date\|.+\|yes}}/", $pageContents ) ||
+			preg_match( "/{{[iI]ndex validated date\|.+\|notadv}}/", $pageContents )
 		) {
-			preg_match( "/\|Title=\[\[(.+)\]\]/", $pageContents, $matches );
+			preg_match( "/\|Title='?'?\[\[(.+)\]\]/", $pageContents, $matches );
 			if ( !empty( $matches ) ) {
 				$transcludedTitle = $matches[1];
 				if ( strpos ( $transcludedTitle, "]]" ) !== false ) {
 					echo "Malformed link: " . $indexTitle . "\n";
 				} else {
+					// Account for piped links
+					$pieces = explode( "|", $transcludedTitle, 2 );
+					$transcludedTitle = $pieces[0];
 					echo $transcludedTitle . "\n";
 				}
 			} else {
@@ -27,8 +32,6 @@ foreach ( $pages as $indexTitle ) {
 			}
 		} else {
 			echo "Not transcluded: " . $indexTitle . "\n";
-			var_dump( $pageContents );
-			echo "\n";
 		}
 	}
 	$x++;

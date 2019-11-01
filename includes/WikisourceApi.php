@@ -24,4 +24,19 @@ class WikisourceApi {
 			return null;
 		}
 	}
+
+	public function getPageDestination( $title ) {
+		try {
+    	$queryResponse = $this->api->getRequest( new SimpleRequest( 'query', [ 'titles' => $title, 'prop' => 'revisions', 'formatversion' => 2, 'redirects' => 1 ] ) );
+		}
+		catch ( Exception $e ) {
+			throw new Exception( "The api returned an error" );
+		}
+		if ( isset( $queryResponse['query']['redirects'][0]['to'] ) ) {
+			return $queryResponse['query']['redirects'][0]['to'];
+		} else {
+			return $title;
+		}
+	}
+
 }

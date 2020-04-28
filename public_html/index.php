@@ -2,11 +2,12 @@
 
 require_once("../vendor/autoload.php");
 require_once("../includes/WikisourceApi.php");
-require_once("./pages.php");
+require_once("./alphalist.php");
 
 $api = new WikisourceApi();
 $x = 1;
 
+/**
 foreach ( $pages as $indexTitle ) {
 	$indexTitle = "Index:" . $indexTitle;
 	if ( $x < 4000 ) {
@@ -35,5 +36,14 @@ foreach ( $pages as $indexTitle ) {
 		}
 	}
 	$x++;
+	sleep( 1 );
+}
+**/
+
+foreach ( $pages as $title ) {
+	$realTitle = $api->getPageDestination( $title );
+	if ( $realTitle !== $title ) {
+		echo $title . ": " . $realTitle . "\n";
+	}
 	sleep( 1 );
 }

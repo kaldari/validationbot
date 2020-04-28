@@ -7,12 +7,7 @@
 		}
 	],
 	"license": "MIT",
-	"support": {
-		"issues": "https://bugs.mediawiki.org/",
-		"irc": "irc://irc.freenode.net/mediawiki",
-		"wiki": "https://www.mediawiki.org/"
-	},
 	"require": {
-		"addwiki/mediawiki-api-base": "~2.0"
+		"addwiki/mediawiki-api-base": "~2.5"
 	}
 }
